@@ -11,7 +11,7 @@ addBtnRef.addEventListener("click", (event) => {
 });
 
 const btnRef = document.getElementById("btn");
-function check() {
+function newTask() {
   const titleInputRef = document.getElementById("title");
   const disInputRef = document.getElementById("description");
   if (titleInputRef.value === "" && disInputRef.value === "") {
