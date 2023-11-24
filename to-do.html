@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://kit.fontawesome.com/e72a55be5d.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./to-do.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="boards">
+        <div class="board">
+          <div class="headerBoard">
+            To do
+            <span class="count" id="countTodo">0</span>
+          </div>
+          <div class="cards" id="todo"></div>
+          <div id="addBtn">
+            <i class="fa-solid fa-plus"></i>
+            <div>Add card</div>
+          </div>
+          <div class="over"></div>
+        </div>
+        <div class="board">
+          <div class="headerBoard">
+            In progress
+            <span class="count" id="countInPro">0</span>
+          </div>
+          <div class="cards" id="inPro"></div>
+          <div class="addBtn">
+            <i class="fa-solid fa-plus"></i>
+            <div>Add card</div>
+          </div>
+          <div class="over"></div>
+        </div>
+        <div class="board">
+          <div class="headerBoard">
+            Stuck
+            <span class="count" id="countStuck">0</span>
+          </div>
+          <div class="cards" id="Stuck"></div>
+          <div class="addBtn">
+            <i class="fa-solid fa-plus"></i>
+            <div>Add card</div>
+          </div>
+          <div class="over"></div>
+        </div>
+        <div class="board">
+        <div class="headerBoard">
+          Done
+          <span class="count" id="countDone">0</span>
+        </div>
+        <div class="cards" id="Done"></div>
+        <div class="addBtn">
+          <i class="fa-solid fa-plus"></i>
+          <div>Add card</div>
+        </div>
+        <div class="over"></div>
+      </div>
+      <div class="backdrop active">
+        <div class="away"></div>
+        <div class="modal">
+            <form>
+                <h1>Add task</h1>
+                <div>
+                    <label name="title">Title</label>
+                    <input type="text" name="title" id="title" />
+                    <p class="warning">Бөглөнө үү</p>
+                </div>
+                
+                    <div>
+                    <label name="Description">Description</label>
+                    <textarea
+                        type="text"
+                        name="Description"
+                        id="description"
+                    ></textarea>
+                    <p class="warning">Бөглөнө үү</p>
+                    </div>
+                    <div>
+                    <label name="status">Status</label>
+                    <select name="status" id="status">
+                        <option value="todo">To do</option>
+                        <option value="inprogress">In progress</option>
+                        <option value="stuck">Stuck</option>
+                        <option value="done">Done</option>
+                    </select>
+                    </div>
+                    <div>
+                    <label name="priority">Priority</label>
+                    <select name="priority" id="priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    </div>
+                    <button id="btn">Add Task</button>
+            </form>
+          
+        </div>
+      </div>
+    </div>
+    <script src="./to-do.js"></script>
+  </body>
+</html>
