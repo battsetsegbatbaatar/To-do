@@ -4,6 +4,7 @@
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
 }
+@import url("https://unpkg.com/css.gg@2.0.0/icons/css/add-r.css");
 @media screen and(max-width:1400px) {
 }
 .container {
@@ -119,4 +120,21 @@ button {
   color: white;
   cursor: pointer;
   margin-top: 24px;
+}
+.cards,
+.done {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: white;
+  cursor: grab;
+  gap: 12px;
+  display: flex;
+}
+.div {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: white;
+  cursor: grab;
+  gap: 12px;
+  display: flex;
 }
