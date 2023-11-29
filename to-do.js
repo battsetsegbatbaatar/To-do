@@ -3,11 +3,9 @@ const addBtnRef = document.getElementById("addBtn");
 // + add button der darahad tsonh vvsch task hiih heseg
 const active = document.querySelectorAll(".active");
 addBtnRef.addEventListener("click", (event) => {
-  console.log("click", active);
   active.forEach((element) => {
     element.style.display = "flex";
   });
-  console.log(state.tasks);
 });
 // taskaa hiih hooson array
 const state = {
@@ -16,10 +14,15 @@ const state = {
 const addTaskBtn = document.getElementById("btn");
 addTaskBtn.addEventListener("click", () => {
   const active = document.querySelector(".active");
-  if (active) {
-    active.style.display = "none";
+  const warning = document.getElementById("warning");
+  if (titleInputRef.value === "" || desInputRef.value === "") {
+    warning.style.display = "flex";
+  } else {
+    if (active) {
+      active.style.display = "none";
+      addTask();
+    }
   }
-  addTask();
 });
 
 // shine tsonhon deer utgaa awhiin tuld id duudsan
@@ -27,10 +30,8 @@ const titleInputRef = document.getElementById("title");
 const desInputRef = document.getElementById("description");
 const prioInputRef = document.getElementById("priority");
 const staIputRef = document.getElementById("status");
-const deleteBtn = document.getElementById("delete");
 
 function render() {
-  console.log(state.task);
   //  vvsgesen arrayruu utga hiisn
   state.tasks.forEach((task) => {
     //  shine elment vvsgesen
@@ -48,13 +49,12 @@ function render() {
     desRef.textContent = task.description;
     statusRef.textContent = task.state;
     prioRef.textContent = task.priority;
-    console.log(titRef);
-    console.log(task);
     // icon nuudaa duudsan
     const doneIcon = document.createElement("i");
-    doneIcon.classList.add("far", "circle-check");
+    doneIcon.classList.add("fa-regular", "fa-circle-check");
     const deleteIcon = document.createElement("i");
     deleteIcon.classList.add("fa-solid", "fa-xmark");
+    deleteIcon.id = task.id;
     const editIcon = document.createElement("i");
     editIcon.classList.add("fa-regular", "fa-pen-to-square");
 
@@ -74,14 +74,36 @@ function render() {
     card.appendChild(edit);
     card.classList.add("card");
     console.log(card);
+    deleteIcon.onclick = function (event) {
+      const taskId = event.target.id;
+      state.tasks = state.tasks.filter((task) => task.id !== taskId);
+    };
+    doneIcon.onclick = function () {
+      doneIcon.classList.add("fa-solid", "fa-circle-check");
+      task.state = "done";
+      if (task.state === "done") {
+        const done = document.getElementById("done");
+        done.innerHTML = "";
+        done.appendChild(card);
+      }
+    };
+    editIcon.onclick = function () {
+      if (active[0]) {
+        active[0].style.display = "flex";
+        titRef.value = titRef.value;
+        desRef.value = desInputRef.value;
+        statusRef.value = staIputRef.value;
+        prioRef.value = prioInputRef.value;
+      }
+    };
 
-    console.log(task.state);
     if ((task.completed = !task.completed)) {
       // 4 baganaruu oruulah heseg
       if (task.state === "todo") {
         const todo = document.getElementById("todo");
         todo.appendChild(card);
-        console.log(todo);
+        const countTodo = document.getElementById("countTodo");
+        countTodo = state.tasks.length;
       }
       if (task.state === "inprogress") {
         const inProgress = document.getElementById("inProgress");
@@ -103,18 +125,17 @@ function render() {
 }
 
 const addTask = () => {
+  const id = "id" + Math.random().toString(16).slice(2);
+  console.log(id);
+
   state.tasks.push({
     Title: titleInputRef.value.trim(),
     description: desInputRef.value.trim(),
     state: staIputRef.value,
     priority: prioInputRef.value,
+    id: id,
   });
-  const warning = document.getElementById("warning");
-  if (titleInputRef.value === "" || desInputRef.value === "") {
-    warning.style.display = "flex";
-  } else {
-    warning.style.display = "none";
-  }
+  console.log(typeof titleInputRef.value);
   render();
   titleInputRef.value = "";
   desInputRef.value = "";
