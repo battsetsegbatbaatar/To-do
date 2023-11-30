@@ -1,5 +1,5 @@
 const addBtnRef = document.getElementById("addBtn");
-
+console.log(addBtnRef);
 // + add button der darahad tsonh vvsch task hiih heseg
 const active = document.querySelectorAll(".active");
 addBtnRef.addEventListener("click", (event) => {
@@ -24,14 +24,21 @@ addTaskBtn.addEventListener("click", () => {
     }
   }
 });
-
 // shine tsonhon deer utgaa awhiin tuld id duudsan
 const titleInputRef = document.getElementById("title");
 const desInputRef = document.getElementById("description");
 const prioInputRef = document.getElementById("priority");
 const staIputRef = document.getElementById("status");
-
+// render unshjiin
 function render() {
+  const todo = document.getElementById("todo");
+  const inProgress = document.getElementById("inProgress");
+  const stuck = document.getElementById("stuck");
+  const done = document.getElementById("done");
+  done.innerHTML = "";
+  stuck.innerHTML = "";
+  inProgress.innerHTML = "";
+  todo.innerHTML = "";
   //  vvsgesen arrayruu utga hiisn
   state.tasks.forEach((task) => {
     //  shine elment vvsgesen
@@ -43,7 +50,6 @@ function render() {
     const desRef = document.createElement("p");
     const statusRef = document.createElement("div");
     const prioRef = document.createElement("div");
-
     // shine vvsgesen elementendee tsonhon deer bichsen utgaa oruulsn
     titRef.textContent = task.Title;
     desRef.textContent = task.description;
@@ -57,7 +63,6 @@ function render() {
     deleteIcon.id = task.id;
     const editIcon = document.createElement("i");
     editIcon.classList.add("fa-regular", "fa-pen-to-square");
-
     // duudsan zvilsee appenad child hiisen
     done.appendChild(doneIcon);
     done.classList.add("done");
@@ -73,61 +78,66 @@ function render() {
     card.appendChild(defailt);
     card.appendChild(edit);
     card.classList.add("card");
-    console.log(card);
+
+    editIcon.onclick = function () {
+      if (active[0]) {
+        titleInputRef.value = titRef.textContent;
+        desInputRef.value = desRef.textContent;
+        staIputRef.value = statusRef.textContent;
+        prioInputRef.value = prioRef.textContent;
+        active[0].style.display = "flex";
+        task.Title = "";
+        task.description = "";
+        task.state = "";
+        task.priority = "";
+      }
+    };
+    // 4 baganaruu oruulah heseg
+    if (task.state === "todo") {
+      todo.appendChild(card);
+    }
+    if (task.state === "inprogress") {
+      inProgress.appendChild(card);
+    }
+    if (task.state === "stuck") {
+      stuck.appendChild(card);
+    }
+    if (task.state === "done") {
+      done.appendChild(card);
+    }
     deleteIcon.onclick = function (event) {
       const taskId = event.target.id;
       state.tasks = state.tasks.filter((task) => task.id !== taskId);
+      render();
+      count();
     };
     doneIcon.onclick = function () {
       doneIcon.classList.add("fa-solid", "fa-circle-check");
       task.state = "done";
       if (task.state === "done") {
         const done = document.getElementById("done");
-        done.innerHTML = "";
         done.appendChild(card);
+        count();
       }
+      count();
     };
-    editIcon.onclick = function () {
-      if (active[0]) {
-        active[0].style.display = "flex";
-        titRef.value = titRef.value;
-        desRef.value = desInputRef.value;
-        statusRef.value = staIputRef.value;
-        prioRef.value = prioInputRef.value;
-      }
-    };
-
-    if ((task.completed = !task.completed)) {
-      // 4 baganaruu oruulah heseg
-      if (task.state === "todo") {
-        const todo = document.getElementById("todo");
-        todo.appendChild(card);
-        const countTodo = document.getElementById("countTodo");
-        countTodo = state.tasks.length;
-      }
-      if (task.state === "inprogress") {
-        const inProgress = document.getElementById("inProgress");
-        inProgress.innerHTML = "";
-        inProgress.appendChild(card);
-      }
-      if (task.state === "stuck") {
-        const stuck = document.getElementById("stuck");
-        stuck.innerHTML = "";
-        stuck.appendChild(card);
-      }
-      if (task.state === "done") {
-        const done = document.getElementById("done");
-        done.innerHTML = "";
-        done.appendChild(card);
-      }
-    }
+    count();
   });
 }
+function count() {
+  const countTodo = document.getElementById("countTodo");
+  const countInPro = document.getElementById("countInPro");
+  const countStuck = document.getElementById("countStuck");
+  const countDone = document.getElementById("countDone");
 
+  countTodo.innerText = document.getElementById("todo").childElementCount;
+  countInPro.innerText =
+    document.getElementById("inProgress").childElementCount;
+  countStuck.innerText = document.getElementById("stuck").childElementCount;
+  countDone.innerText = document.getElementById("done").childElementCount;
+}
 const addTask = () => {
   const id = "id" + Math.random().toString(16).slice(2);
-  console.log(id);
-
   state.tasks.push({
     Title: titleInputRef.value.trim(),
     description: desInputRef.value.trim(),
@@ -135,7 +145,7 @@ const addTask = () => {
     priority: prioInputRef.value,
     id: id,
   });
-  console.log(typeof titleInputRef.value);
+  console.log(state.tasks);
   render();
   titleInputRef.value = "";
   desInputRef.value = "";
