@@ -1,12 +1,15 @@
-const addBtnRef = document.getElementById("addBtn");
+const addBtnRef = document.querySelectorAll(".addBtn");
 console.log(addBtnRef);
 // + add button der darahad tsonh vvsch task hiih heseg
 const active = document.querySelectorAll(".active");
-addBtnRef.addEventListener("click", (event) => {
-  active.forEach((element) => {
-    element.style.display = "flex";
-  });
+addBtnRef.forEach((element) => {
+  element.onclick = function (event) {
+    active.forEach((element) => {
+      element.style.display = "flex";
+    });
+  };
 });
+
 // taskaa hiih hooson array
 const state = {
   tasks: [],
@@ -94,15 +97,19 @@ function render() {
     };
     // 4 baganaruu oruulah heseg
     if (task.state === "todo") {
+      task.priority = task.priority.toLowerCase();
       todo.appendChild(card);
     }
     if (task.state === "inprogress") {
+      task.priority = task.priority.toLowerCase();
       inProgress.appendChild(card);
     }
     if (task.state === "stuck") {
+      task.priority = task.priority.toLowerCase();
       stuck.appendChild(card);
     }
     if (task.state === "done") {
+      task.priority = task.priority.toLowerCase();
       done.appendChild(card);
     }
     deleteIcon.onclick = function (event) {

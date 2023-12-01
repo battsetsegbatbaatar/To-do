@@ -41,7 +41,7 @@
   align-items: center;
   gap: 12px;
 }
-#addBtn {
+.addBtn {
   display: flex;
   gap: 16px;
   align-items: center;
