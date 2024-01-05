@@ -14,6 +14,31 @@ addBtnRef.forEach((element) => {
 const state = {
   tasks: [],
 };
+const useId = () => {
+  const id = "id" + Math.random().toString(16).slice(2);
+  return id;
+};
+const cleanTasks = () => {
+  const taskColumns = document.querySelectorAll(".column");
+  taskColumns.forEach((taskColumn) => {
+    taskColumn.innerHTML = "";
+  });
+};
+
+const countEachTaskOfStatus = () => {
+  const statuses = ["todo", "inprogress", "stuck", "done"];
+
+  statuses.forEach((status) => {
+    const taskColumnCounter = document.getElementById(
+      status + "-column-task-counter"
+    );
+
+    taskColumnCounter.innerHTML = state.tasks.reduce((acc, cur) => {
+      if (cur.status == status) return acc + 1;
+      return acc + 0;
+    }, 0);
+  });
+};
 const addTaskBtn = document.getElementById("btn");
 addTaskBtn.addEventListener("click", () => {
   const active = document.querySelector(".active");
@@ -58,6 +83,11 @@ function render() {
     desRef.textContent = task.description;
     statusRef.textContent = task.state;
     prioRef.textContent = task.priority;
+
+    card.classList.add("task-card");
+    card.id = task.id + "-task-card";
+    card.draggable = "true";
+
     // icon nuudaa duudsan
     const doneIcon = document.createElement("i");
     doneIcon.classList.add("fa-regular", "fa-circle-check");
@@ -116,7 +146,6 @@ function render() {
       const taskId = event.target.id;
       state.tasks = state.tasks.filter((task) => task.id !== taskId);
       render();
-      count();
     };
     doneIcon.onclick = function () {
       doneIcon.classList.add("fa-solid", "fa-circle-check");
@@ -124,25 +153,12 @@ function render() {
       if (task.state === "done") {
         const done = document.getElementById("done");
         done.appendChild(card);
-        count();
       }
-      count();
     };
-    count();
   });
+  countEachTaskOfStatus();
 }
-function count() {
-  const countTodo = document.getElementById("countTodo");
-  const countInPro = document.getElementById("countInPro");
-  const countStuck = document.getElementById("countStuck");
-  const countDone = document.getElementById("countDone");
 
-  countTodo.innerText = document.getElementById("todo").childElementCount;
-  countInPro.innerText =
-    document.getElementById("inProgress").childElementCount;
-  countStuck.innerText = document.getElementById("stuck").childElementCount;
-  countDone.innerText = document.getElementById("done").childElementCount;
-}
 const addTask = () => {
   const id = "id" + Math.random().toString(16).slice(2);
   state.tasks.push({
@@ -159,3 +175,31 @@ const addTask = () => {
   staIputRef.value = "";
   prioInputRef.value = "";
 };
+
+const taskCards = document.querySelectorAll('.task-card');
+  taskCards.forEach((taskCard) => {
+    taskCard.addEventListener('dragstart', (event) => {
+      event.dataTransfer.setData('text', event.target.id);
+    });
+  });
+
+  const taskColumns = document.querySelectorAll('.column');
+  taskColumns.forEach((taskColumn) => {
+    taskColumn.addEventListener('drop', (event) => {
+      const draggedTaskId = event.dataTransfer.getData('text');
+
+      state.tasks = state.tasks.map((task) => {
+        if (task.id + '-task-card' == draggedTaskId) task.status = event.target.getAttribute('data-id');
+        return task;
+      });
+
+      render();
+    });
+
+    taskColumn.addEventListener('dragover', function allowDrop(ev) {
+      ev.preventDefault();
+    });
+  });
+
+  countEachTaskOfStatus();
+}
